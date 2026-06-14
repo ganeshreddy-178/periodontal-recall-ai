@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: periodontal-recall-api
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 run:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DB_HOST
+        fromDatabase:
+          name: periodontal-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: periodontal-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: periodontal-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: periodontal-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: periodontal-db
+          property: password
+
+databases:
+  - name: periodontal-db
+    plan: free
+    databaseName: periodontal_recall_ai
+    user: app_user
