@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["python311", "gcc", "libglib", "libGL"]
+
+[phases.install]
+cmds = ["python3 -m pip install --upgrade pip", "python3 -m pip install -r requirements.txt"]
+
+[start]
+cmd = "cd backend && python3 -m gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 run:app"
