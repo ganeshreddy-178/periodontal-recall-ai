@@ -50,6 +50,20 @@ class PatientProvider extends ChangeNotifier {
     return false;
   }
 
+  Future<bool> updatePatient(int id, Map<String, dynamic> data) async {
+    _loading = true; notifyListeners();
+    try {
+      final res = await ApiService.updatePatient(id, data);
+      if (res['success'] == true) {
+        await fetchPatients(reset: true);
+        return true;
+      }
+      _error = res['message'] as String?;
+    } catch (_) { _error = 'Error updating patient.'; }
+    _loading = false; notifyListeners();
+    return false;
+  }
+
   Future<bool> deletePatient(int id) async {
     try {
       final res = await ApiService.deletePatient(id);

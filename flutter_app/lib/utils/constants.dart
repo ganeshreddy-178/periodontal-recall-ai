@@ -6,7 +6,7 @@ class ApiConstants {
     if (kIsWeb) {
       return 'http://localhost:5000/api';       // Chrome / Web
     } else {
-      return 'http://10.238.87.188:5000/api';   // Android phone (same WiFi)
+      return 'http://10.105.200.188:5000/api';   // Android phone (same WiFi)
     }
   }
 

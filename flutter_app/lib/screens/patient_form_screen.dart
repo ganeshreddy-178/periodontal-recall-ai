@@ -92,8 +92,7 @@ class _PatientFormScreenState extends State<PatientFormScreen> {
     final pp = context.read<PatientProvider>();
     bool ok;
     if (_isEditing) {
-      final res = await pp.createPatient(data); // reuse for simplicity (provider delegates)
-      ok = res;
+      ok = await pp.updatePatient(widget.patient!.id, data);
     } else {
       ok = await pp.createPatient(data);
     }
