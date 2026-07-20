@@ -2,8 +2,9 @@ services:
   - type: web
     name: periodontal-recall-api
     runtime: python
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 run:app
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash start.sh
     envVars:
       - key: FLASK_ENV
         value: production
@@ -11,6 +12,18 @@ services:
         generateValue: true
       - key: JWT_SECRET_KEY
         generateValue: true
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        value: greddy213041974@gmail.com
+      - key: SMTP_PASS
+        value: vxjjxeypeinknxhm
+      - key: SMTP_FROM
+        value: greddy213041974@gmail.com
+      - key: UPLOAD_FOLDER
+        value: uploads
       - key: DB_HOST
         fromDatabase:
           name: periodontal-db
