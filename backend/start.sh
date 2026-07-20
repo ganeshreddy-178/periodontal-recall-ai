@@ -5,17 +5,11 @@ echo "=========================================="
 echo " Periodontal Recall AI - Starting..."
 echo "=========================================="
 
-# Railway provides MYSQL_URL or individual vars
-# Handle both cases
-if [ -n "$MYSQL_URL" ]; then
-    export DATABASE_URL="$MYSQL_URL"
-fi
-
-echo "Initializing database tables..."
+echo "Initializing database..."
 python -c "
 import os, time
-# Wait for DB to be ready
-for i in range(10):
+
+for i in range(15):
     try:
         from app import create_app
         from app.extensions import db
@@ -24,7 +18,7 @@ for i in range(10):
         app = create_app('production')
         with app.app_context():
             db.create_all()
-            print('Tables created.')
+            print('Tables created OK.')
             if ModelVersion.query.count() == 0:
                 mv = ModelVersion(
                     version_tag='v1.0.0',
@@ -36,11 +30,14 @@ for i in range(10):
                 )
                 db.session.add(mv)
                 db.session.commit()
-                print('Model version seeded.')
+                print('Model version seeded OK.')
         break
     except Exception as e:
-        print(f'DB not ready ({i+1}/10): {e}')
-        time.sleep(3)
+        print(f'Attempt {i+1}/15 failed: {e}')
+        time.sleep(4)
+else:
+    print('ERROR: Could not initialize database after 15 attempts.')
+    exit(1)
 "
 
 echo "Starting gunicorn on port ${PORT:-5000}..."

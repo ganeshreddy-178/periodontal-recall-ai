@@ -1,4 +1,4 @@
-"""Flask configuration classes."""
+"""Flask configuration — supports MySQL (local) and PostgreSQL (Railway)."""
 import os
 from datetime import timedelta
 from urllib.parse import quote_plus
@@ -9,14 +9,24 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 def _build_db_uri():
     """
-    Builds SQLAlchemy DB URI.
-    Supports:
-    - Individual env vars (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
-    - MYSQL_URL from Railway (mysql://user:pass@host:port/db)
+    Priority order:
+    1. DATABASE_URL (Railway PostgreSQL)
+    2. MYSQL_URL / MYSQL_PRIVATE_URL (Railway MySQL)
+    3. Individual DB_* env vars (local)
     """
+    # Railway PostgreSQL
+    db_url = os.getenv("DATABASE_URL") or os.getenv("DATABASE_PRIVATE_URL")
+    if db_url:
+        # Railway uses postgres:// — SQLAlchemy needs postgresql+psycopg2://
+        if db_url.startswith("postgres://"):
+            db_url = db_url.replace("postgres://", "postgresql+psycopg2://", 1)
+        elif db_url.startswith("postgresql://"):
+            db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+        return db_url
+
+    # Railway MySQL
     mysql_url = os.getenv("MYSQL_URL") or os.getenv("MYSQL_PRIVATE_URL")
     if mysql_url:
-        # Railway gives mysql:// — SQLAlchemy needs mysql+pymysql://
         if mysql_url.startswith("mysql://"):
             mysql_url = mysql_url.replace("mysql://", "mysql+pymysql://", 1)
         if "charset=" not in mysql_url:
@@ -24,6 +34,7 @@ def _build_db_uri():
             mysql_url += f"{sep}charset=utf8mb4"
         return mysql_url
 
+    # Local MySQL
     host = os.getenv("DB_HOST",     "localhost")
     port = os.getenv("DB_PORT",     "3306")
     user = os.getenv("DB_USER",     "root")
