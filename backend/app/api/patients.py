@@ -124,7 +124,7 @@ def update_patient(patient_id: int):
 @jwt_required()
 def delete_patient(patient_id: int):
     uid  = int(get_jwt_identity())
-    user = User.query.get(uid)
+    user = db.session.get(User, uid)
 
     # Staff are not allowed to delete patients
     if user and user.role == "staff":

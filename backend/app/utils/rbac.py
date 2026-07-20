@@ -2,6 +2,7 @@
 from functools import wraps
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity
+from ..extensions import db
 from ..models.user import User
 
 
@@ -13,7 +14,7 @@ def role_required(*roles):
             from flask_jwt_extended import verify_jwt_in_request
             verify_jwt_in_request()
             uid  = int(get_jwt_identity())
-            user = User.query.get(uid)
+            user = db.session.get(User, uid)
             if not user or user.role not in roles:
                 return jsonify({
                     "success": False,

@@ -65,6 +65,10 @@ def send_otp_email(to_email: str, otp: str, name: str = "") -> tuple[bool, str]:
         msg["Subject"] = "Your Periodontal Recall AI Password Reset OTP"
         msg["From"]    = f"Periodontal Recall AI <{from_email}>"
         msg["To"]      = to_email
+        msg["Reply-To"] = from_email
+        msg["X-Priority"] = "1"
+        msg["X-Mailer"]   = "Periodontal Recall AI Mailer"
+        msg["Importance"] = "High"
 
         html = f"""
         <!DOCTYPE html>
@@ -129,6 +133,22 @@ def send_otp_email(to_email: str, otp: str, name: str = "") -> tuple[bool, str]:
         """
 
         msg.attach(MIMEText(html, "html"))
+
+        # Plain text version (important for spam score)
+        plain = f"""
+Periodontal Recall AI - Password Reset OTP
+
+Hello {name if name else 'User'},
+
+Your OTP for password reset is: {otp}
+
+This OTP expires in {OTP_EXPIRY_MINUTES} minutes.
+
+If you did not request this, please ignore this email.
+
+- Periodontal Recall AI Team
+        """.strip()
+        msg.attach(MIMEText(plain, "plain"))
 
         with smtplib.SMTP(smtp_host, smtp_port) as server:
             server.ehlo()

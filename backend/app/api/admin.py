@@ -43,7 +43,7 @@ def change_user_role(user_id: int):
     if new_role not in ("admin", "dentist", "staff"):
         return error("Invalid role. Must be 'admin', 'dentist', or 'staff'.")
 
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return error("User not found.", 404)
 
@@ -60,7 +60,7 @@ def change_user_role(user_id: int):
 @role_required("admin")
 def deactivate_user(user_id: int):
     """Soft-deactivate a user account (admin only)."""
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return error("User not found.", 404)
 
