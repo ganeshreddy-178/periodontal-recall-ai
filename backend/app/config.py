@@ -8,6 +8,22 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 
 def _build_db_uri():
+    """
+    Builds SQLAlchemy DB URI.
+    Supports:
+    - Individual env vars (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+    - MYSQL_URL from Railway (mysql://user:pass@host:port/db)
+    """
+    mysql_url = os.getenv("MYSQL_URL") or os.getenv("MYSQL_PRIVATE_URL")
+    if mysql_url:
+        # Railway gives mysql:// — SQLAlchemy needs mysql+pymysql://
+        if mysql_url.startswith("mysql://"):
+            mysql_url = mysql_url.replace("mysql://", "mysql+pymysql://", 1)
+        if "charset=" not in mysql_url:
+            sep = "&" if "?" in mysql_url else "?"
+            mysql_url += f"{sep}charset=utf8mb4"
+        return mysql_url
+
     host = os.getenv("DB_HOST",     "localhost")
     port = os.getenv("DB_PORT",     "3306")
     user = os.getenv("DB_USER",     "root")
@@ -17,8 +33,8 @@ def _build_db_uri():
 
 
 class BaseConfig:
-    SECRET_KEY         = os.getenv("SECRET_KEY",     "dev-secret-key")
-    JWT_SECRET_KEY     = os.getenv("JWT_SECRET_KEY", "dev-jwt-secret")
+    SECRET_KEY         = os.getenv("SECRET_KEY",     "dev-secret-key-change-in-prod")
+    JWT_SECRET_KEY     = os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-change-in-prod")
     JWT_ACCESS_TOKEN_EXPIRES  = timedelta(hours=12)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
 
