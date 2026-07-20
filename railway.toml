@@ -1,8 +1,9 @@
 [build]
 builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
 
 [deploy]
-startCommand = "cd backend && python -m gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 run:app"
+startCommand = "cd backend && gunicorn --bind 0.0.0.0:$PORT --workers 2 --timeout 120 run:app"
 healthcheckPath = "/api/health/"
 healthcheckTimeout = 60
 restartPolicyType = "ON_FAILURE"
