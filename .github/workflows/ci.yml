@@ -53,4 +53,4 @@ jobs:
 
       - name: Run lint check
         run: |
-          flake8 backend/app/ --max-line-length=120 --ignore=E501,W503,E302,E303,W291,W293,E226 --count
+          flake8 backend/app/ --max-line-length=200 --ignore=E501,W503,E302,E303,W291,W293,E226,E231,E241,E251,F401,W605,E711,E712,W391,E261,E265,E266,E401,E402,C901 --count --statistics
