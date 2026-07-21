@@ -50,6 +50,10 @@ def register():
     db.session.commit()
     log_action(user.id, "user.register", "users", user.id)
 
+    # Live activity log → GitHub
+    from ..utils.activity_log import log_activity
+    log_activity("New User Registered", f"Role: {role} | Email: {email}")
+
     access  = create_access_token(identity=str(user.id))
     refresh = create_refresh_token(identity=str(user.id))
     return success({"user": user.to_dict(), "access_token": access, "refresh_token": refresh},

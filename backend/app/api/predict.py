@@ -150,6 +150,12 @@ def predict():
     db.session.commit()
 
     log_action(uid, "prediction.create", "predictions", pred.id)
+
+    # Live activity log → GitHub
+    from ..utils.activity_log import log_activity
+    log_activity("AI Prediction Run",
+                 f"Severity: {fusion['final_severity']} | Risk: {fusion['final_risk_level']} | Confidence: {fusion['final_confidence']}%")
+
     return success({
         "prediction": pred.to_dict(),
         "reminder":   reminder.to_dict(),

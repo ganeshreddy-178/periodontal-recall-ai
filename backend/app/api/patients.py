@@ -54,6 +54,12 @@ def create_patient():
     db.session.add(patient)
     db.session.commit()
     log_action(uid, "patient.create", "patients", patient.id)
+
+    # Live activity log → GitHub
+    from ..utils.activity_log import log_activity
+    log_activity("Patient Added",
+                 f"{patient.first_name} {patient.last_name} — {patient.gender}, age {patient.age}")
+
     return success(patient.to_dict(), "Patient created.", 201)
 
 
