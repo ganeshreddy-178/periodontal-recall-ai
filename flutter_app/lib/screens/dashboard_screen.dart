@@ -34,8 +34,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ?? {'healthy': 0, 'mild': 0, 'moderate': 0, 'severe': 0};
 
     return Scaffold(
+      key: const Key('dashboard_screen'),
       backgroundColor: AppTheme.surface,
-      body: dash.loading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: () => context.read<DashboardProvider>().load(),

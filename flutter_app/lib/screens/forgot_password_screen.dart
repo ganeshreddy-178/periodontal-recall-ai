@@ -160,8 +160,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('forgot_password_screen'),
       backgroundColor: AppTheme.surface,
-      body: Stack(children: [
         // Gradient header
         Container(
           height: MediaQuery.of(context).size.height * 0.35,

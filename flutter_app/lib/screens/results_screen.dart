@@ -23,8 +23,8 @@ class ResultsScreen extends StatelessWidget {
     final color = AppTheme.severityColor(sev);
 
     return Scaffold(
+      key: const Key('results_screen'),
       backgroundColor: AppTheme.surface,
-      body: CustomScrollView(
         slivers: [
           // ── Hero header ──
           SliverAppBar(

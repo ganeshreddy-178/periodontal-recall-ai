@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final safeIndex = _selectedIndex.clamp(0, screens.length - 1);
 
     return Scaffold(
+      key: const Key('home_screen'),
       body: IndexedStack(index: safeIndex, children: screens),
       bottomNavigationBar: NavigationBar(
         selectedIndex: safeIndex,

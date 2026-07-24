@@ -14,6 +14,7 @@ class ProfileScreen extends StatelessWidget {
     final user = auth.user;
 
     return Scaffold(
+      key: const Key('profile_screen'),
       appBar: AppBar(
         title: const Text('Profile'),
         actions: [
@@ -117,6 +118,7 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
             ElevatedButton.icon(
+              key: const Key('profile_logout_button'),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () => _logout(context),
               icon: const Icon(Icons.logout),

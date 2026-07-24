@@ -110,6 +110,7 @@ class _PatientFormScreenState extends State<PatientFormScreen> {
   Widget build(BuildContext context) {
     final loading = context.watch<PatientProvider>().loading;
     return Scaffold(
+      key: const Key('patient_form_screen'),
       appBar: AppBar(title: Text(_isEditing ? 'Edit Patient' : 'New Patient')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -192,6 +193,7 @@ class _PatientFormScreenState extends State<PatientFormScreen> {
               loading
                   ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
+                      key: const Key('patient_submit_button'),
                       onPressed: _submit,
                       child: Text(_isEditing ? 'Update Patient' : 'Add Patient')),
               const SizedBox(height: 24),

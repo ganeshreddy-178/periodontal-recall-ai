@@ -56,6 +56,7 @@ class _AdminScreenState extends State<AdminScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('admin_screen'),
       appBar: AppBar(
         title: const Text('Admin Panel'),
         actions: [

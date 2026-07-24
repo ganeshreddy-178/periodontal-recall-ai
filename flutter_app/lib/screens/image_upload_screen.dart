@@ -75,6 +75,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
     final loading = context.watch<PredictionProvider>().loading;
 
     return Scaffold(
+      key: const Key('image_upload_screen'),
       appBar: AppBar(title: Text('Scan: ${widget.patient.fullName}')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -87,6 +88,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                     color: Color(0xFF1565C0))),
             const SizedBox(height: 12),
             GestureDetector(
+              key: const Key('upload_image_area'),
               onTap: _showImageOptions,
               child: Container(
                 height: 200,
@@ -130,12 +132,13 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
             const SizedBox(height: 32),
             loading
                 ? const Column(children: [
-                    CircularProgressIndicator(),
+                    CircularProgressIndicator(key: Key('upload_loading')),
                     SizedBox(height: 12),
                     Text('Running AI analysis…',
                         style: TextStyle(color: Colors.grey)),
                   ])
                 : ElevatedButton.icon(
+                    key: const Key('upload_predict_button'),
                     onPressed: _runPrediction,
                     icon: const Icon(Icons.psychology),
                     label: const Text('Analyse & Predict'),

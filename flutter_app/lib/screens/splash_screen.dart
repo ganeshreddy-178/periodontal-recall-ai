@@ -62,6 +62,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('splash_screen'),
       body: Container(
         decoration: const BoxDecoration(gradient: AppTheme.gradientPrimary),
         child: SafeArea(

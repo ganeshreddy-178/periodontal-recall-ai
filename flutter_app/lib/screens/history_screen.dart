@@ -24,6 +24,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     final pp = context.watch<PredictionProvider>();
     return Scaffold(
+      key: const Key('history_screen'),
       appBar: AppBar(
         title: const Text('Prediction History'),
         actions: [

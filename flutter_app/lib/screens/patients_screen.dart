@@ -33,6 +33,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
   Widget build(BuildContext context) {
     final pp = context.watch<PatientProvider>();
     return Scaffold(
+      key: const Key('patients_screen'),
       appBar: AppBar(
         title: const Text('Patients'),
         bottom: PreferredSize(
@@ -40,6 +41,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
             child: TextField(
+              key: const Key('patients_search'),
               controller: _searchCtrl,
               decoration: InputDecoration(
                 hintText: 'Search patients…',
@@ -68,6 +70,7 @@ class _PatientsScreenState extends State<PatientsScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        key: const Key('patients_add_fab'),
         heroTag: 'patients_fab',
         onPressed: () async {
           final ok = await Navigator.push<bool>(context,
